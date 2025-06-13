@@ -47,3 +47,6 @@ http://IP_DEL_SERVIDOR:8080
 ```
 Para utilizar el clúster con otro programa o aplicación utiliza la dirección IP del servidor Docker que aloja el balanceador de carga y el puerto 3306.
 
+## ⚠️ Importante
+Para que el clúster esté activo y funcional más del cincuenta por ciento de los nodos que lo forman deben estar activos. Si solo el cincuenta por ciento de los nodos o menos están activos el clúster no aceptará ningún tipo de solicitud.
+
