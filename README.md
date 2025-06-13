@@ -41,9 +41,9 @@ git clone https://github.com/antonioleonsilva/ansibe-sistemaMonitorizacionMultin
 cd ansible-sistemaMonitorizacionMultinodo
 ansible-playbook -i inventory/hosts.ini main.yaml
 ```
-Para acceder a la interfaz de PHPMyAdmin accede desde un navegador web a la dirección IP del servidor Docker por el puerto 8080. El usuario y contraseña por defecto es **admin**
+Para acceder a la interfaz de PHPMyAdmin accede desde un navegador web a la dirección IP del servidor Docker por el puerto 8080. El usuario y contraseña por defecto es **admin** : 
 ```bash
 http://IP_DEL_SERVIDOR:8080
 ```
-Para utilizar el clúster con otro programa o aplicación utiliza la dirección IP del servidor Docker que aloja el balanceador de carga y el puerto 3306
+Para utilizar el clúster con otro programa o aplicación utiliza la dirección IP del servidor Docker que aloja el balanceador de carga y el puerto 3306.
 
