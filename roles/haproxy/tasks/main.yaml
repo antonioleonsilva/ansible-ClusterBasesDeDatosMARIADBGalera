@@ -1,0 +1,22 @@
+---
+- name: Crear directorio para configuración HAProxy
+  file:
+    path: /opt/haproxy2
+    state: directory
+
+- name: Copiar archivo de configuración HAProxy
+  template:
+    src: haproxy.cfg.j2
+    dest: /opt/haproxy2/haproxy.cfg
+
+- name: Ejecutar contenedor HAProxy
+  community.docker.docker_container:
+    name: haproxy2
+    image: haproxy:latest
+    state: started
+    restart_policy: always
+    volumes:
+      - /opt/haproxy2/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - "3306:3306"
+

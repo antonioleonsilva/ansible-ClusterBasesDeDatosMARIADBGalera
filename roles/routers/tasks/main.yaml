@@ -1,0 +1,9 @@
+---
+- name: Redirigir tráfico HTTP entrante por el puerto 8080 al contenedor de phpmyadmin
+  iptables:
+    table: nat
+    chain: PREROUTING
+    protocol: tcp
+    destination_port: 8080
+    jump: DNAT
+    to_destination: "{{ hostvars['servidorDocker'].ansible_host }}:8080"

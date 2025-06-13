@@ -1,0 +1,20 @@
+---
+- name: Configurar MariaDB Galera Cluster en nodos del cluster
+  hosts: nodos_cluster
+  roles:
+    - mariadb_galera
+
+- name: Desplegar HAProxy en el balanceador
+  hosts: balanceadores
+  roles:
+    - haproxy
+
+- name: Desplegar phpMyAdmin en el servidor Docker
+  hosts: servidores_phpmyadmin
+  roles:
+    - phpmyadmin
+
+- name: Reenvío de puertos
+  hosts: routers
+  roles:
+    - routers

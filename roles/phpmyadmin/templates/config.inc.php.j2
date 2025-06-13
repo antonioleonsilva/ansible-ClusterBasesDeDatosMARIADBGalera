@@ -1,0 +1,11 @@
+<?php
+/* phpMyAdmin sample configuration */
+$i = 0;
+
+$i++;
+/* Configuración del servidor MySQL */
+$cfg['Servers'][$i]['host'] = '{{ hostvars[groups["balanceadores"][0]].ansible_host }}';
+$cfg['Servers'][$i]['port'] = '3306';
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+$cfg['Servers'][$i]['AllowNoPassword'] = false;
+

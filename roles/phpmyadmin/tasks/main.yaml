@@ -1,0 +1,25 @@
+---
+- name: Crear directorio para phpMyAdmin
+  file:
+    path: /opt/phpmyadmin
+    state: directory
+
+- name: Copiar archivo de configuración phpMyAdmin
+  template:
+    src: config.inc.php.j2
+    dest: /opt/phpmyadmin/config.inc.php
+
+- name: Ejecutar contenedor phpMyAdmin
+  community.docker.docker_container:
+    name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    state: started
+    restart_policy: always
+    volumes:
+      - /opt/phpmyadmin/config.inc.php:/etc/phpmyadmin/config.inc.php:ro
+    ports:
+      - "8080:80"
+    env:
+      PMA_HOST: "{{ hostvars['servidorDocker'].ansible_host }}"
+      PMA_PORT: "3306"
+

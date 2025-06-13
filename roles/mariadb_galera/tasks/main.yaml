@@ -1,0 +1,51 @@
+---
+- name: Instalar dependencias
+  apt:
+    name:
+      - mariadb-server
+      - galera-4
+      - rsync
+      - socat
+      - python3-pymysql
+    state: present
+    update_cache: yes
+
+- name: Copiar configuración galera.cnf
+  template:
+    src: galera.cnf.j2
+    dest: /etc/mysql/conf.d/galera.cnf
+  notify: Restart MariaDB
+
+- name: Cambiar bind-address para aceptar conexiones externas
+  ansible.builtin.lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: '^bind-address\s*='
+    line: 'bind-address = 0.0.0.0'
+    backup: yes
+  notify: Restart MariaDB
+
+- name: Habilitar servicio MariaDB
+  systemd:
+    name: mariadb
+    enabled: yes
+
+- name: Iniciar primer nodo con galera_new_cluster
+  command: galera_new_cluster
+  when: inventory_hostname == groups['nodos_cluster'][0]
+
+- name: Iniciar MariaDB en los demás nodos
+  service:
+    name: mariadb
+    state: started
+  when: inventory_hostname != groups['nodos_cluster'][0]
+
+- name: Crear usuario admin con acceso remoto en MariaDB (solo primer nodo)
+  community.mysql.mysql_user:
+    name: admin
+    password: admin
+    priv: "*.*:ALL,GRANT"
+    host: "%"
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+  when: inventory_hostname == groups['nodos_cluster'][0]
+
